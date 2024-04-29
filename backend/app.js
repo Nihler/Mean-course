@@ -1,7 +1,12 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 
+//parsing request to json
+app.use(bodyParser.json());
+
+//fixing CORS
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -15,7 +20,15 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/posts", (req, res, next) => {
+app.post("/api/posts", (req, res, next) => {
+  const post = req.body;
+  console.log(post);
+  res.status(201).json({
+    message: "Post added",
+  });
+});
+
+app.get("/api/posts", (req, res, next) => {
   const posts = [
     {
       id: "12312",
