@@ -6,6 +6,7 @@ const Post = require("./models/post");
 
 const app = express();
 
+//connection string
 mongoose
   .connect(
     "mongodb+srv://jacob:u3QzvQOPzwquVBIV@cluster0.wqdapct.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -39,9 +40,11 @@ app.post("/api/posts", (req, res, next) => {
     title: req.body.title,
     content: req.body.content,
   });
-  post.save();
-  res.status(201).json({
-    message: "Post added",
+  post.save().then((result) => {
+    res.status(201).json({
+      message: "Post added",
+      postId: result._id,
+    });
   });
 });
 
