@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-post-list',
@@ -11,6 +12,9 @@ import { PostsService } from '../posts.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
   isLoading = false;
+  totalPosts = 10;
+  postsPerPage = 3;
+  pageSizeOptions = [1, 2, 5, 10];
 
   constructor(private postsService: PostsService) {}
 
@@ -35,4 +39,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   onDelete(postID: string) {
     this.postsService.deletePost(postID);
   }
+
+  onPageChange(pageData: PageEvent) {}
 }
