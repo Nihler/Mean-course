@@ -51,7 +51,6 @@ export class AuthService {
     console.log('Setting timer: ' + duration);
     this.tokenTimer = setTimeout(() => {
       this.logout();
-      this.clearAuthData();
     }, duration * 1000);
   }
 
@@ -116,6 +115,7 @@ export class AuthService {
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
     clearTimeout(this.tokenTimer);
+    this.clearAuthData();
     this.router.navigate(['/']);
   }
 }
