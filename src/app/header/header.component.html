@@ -16,7 +16,9 @@
       >
     </li>
     <li *ngIf="isLoggedIn">
-      <button mat-button routerLinkActive="mat-accent">Logout</button>
+      <button mat-button routerLinkActive="mat-accent" (click)="onLogout()">
+        Logout
+      </button>
     </li>
   </ul>
 </mat-toolbar>
