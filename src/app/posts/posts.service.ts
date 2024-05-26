@@ -33,12 +33,14 @@ export class PostsService {
                 content: string;
                 _id: string;
                 imagePath: string;
+                creator: string;
               }) => {
                 return {
                   title: post.title,
                   content: post.content,
                   id: post._id,
                   imagePath: post.imagePath,
+                  creator: post.creator,
                 };
               }
             ),
@@ -47,6 +49,7 @@ export class PostsService {
         })
       )
       .subscribe((transformedPostData) => {
+        // console.log(transformedPostData);
         this.posts = transformedPostData.posts;
         this.postsUpdated.next({
           posts: [...this.posts],
