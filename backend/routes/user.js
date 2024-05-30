@@ -22,7 +22,7 @@ router.post("/signup", (req, res, next) => {
       })
       .catch((err) => {
         res.status(500).json({
-          error: err,
+          message: "Invalid authentication credentials!",
         });
       });
   });
@@ -30,20 +30,23 @@ router.post("/signup", (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
   let fetchedUser;
-  console.log(req.body.email);
+
   User.findOne({ email: req.body.email })
     .then((user) => {
-      console.log(user);
+      console.log("USER: " + user);
       if (!user) {
-        return res.status(401).json({
-          message: "Auth failed",
-        });
+        console.log("RETURNING 401");
+        throw new Error("User not found");
+        // return res.status(401).json({
+        //   message: "Auth failed",
+        // });
       }
+      console.log("I SHOULD NOT BE HERE");
       fetchedUser = user;
-      console.log(fetchedUser);
       return bcrypt.compare(req.body.password, user.password);
     })
     .then((result) => {
+      console.log("I SHOULD NOT BE HERE EITHER");
       if (!result) {
         return res.status(401).json({
           message: "Auth failed",
@@ -65,8 +68,8 @@ router.post("/login", (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      return res.status(401).json({
-        message: "Auth failed",
+      res.status(401).json({
+        message: err.message,
       });
     });
 });
