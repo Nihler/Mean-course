@@ -13,7 +13,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ErrorComponent } from './error/error.component';
 import { PostsModule } from './posts/posts.module';
-import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, ErrorComponent],
@@ -21,7 +20,6 @@ import { AuthModule } from './auth/auth.module';
     BrowserModule,
     AppRoutingModule,
     PostsModule,
-    AuthModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialModule,
