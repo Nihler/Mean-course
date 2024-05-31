@@ -1,77 +1,11 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-const User = require("../models/user");
+const UserController = require("../controllers/user");
 
 const router = express.Router();
 
-router.post("/signup", (req, res, next) => {
-  bcrypt.hash(req.body.password, 10).then((hash) => {
-    const user = new User({
-      email: req.body.email,
-      password: hash,
-    });
-    user
-      .save()
-      .then((result) => {
-        res.status(201).json({
-          message: "User Created",
-          result: result,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          message: "Invalid authentication credentials!",
-        });
-      });
-  });
-});
+router.post("/signup", UserController.createUser);
 
-router.post("/login", (req, res, next) => {
-  let fetchedUser;
-
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      console.log("USER: " + user);
-      if (!user) {
-        console.log("RETURNING 401");
-        throw new Error("User not found");
-        // return res.status(401).json({
-        //   message: "Auth failed",
-        // });
-      }
-      console.log("I SHOULD NOT BE HERE");
-      fetchedUser = user;
-      return bcrypt.compare(req.body.password, user.password);
-    })
-    .then((result) => {
-      console.log("I SHOULD NOT BE HERE EITHER");
-      if (!result) {
-        return res.status(401).json({
-          message: "Auth failed",
-        });
-      }
-
-      const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id },
-        "secret_this_should_be_longer",
-        {
-          expiresIn: "1h",
-        }
-      );
-      res.status(200).json({
-        token: token,
-        userId: fetchedUser._id,
-        expiresIn: 3600,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(401).json({
-        message: err.message,
-      });
-    });
-});
+router.post("/login", UserController.login);
 
 module.exports = router;
