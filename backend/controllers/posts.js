@@ -86,7 +86,9 @@ exports.updatePost = (req, res, next) => {
     { _id: req.params.id, creator: req.userData.userId },
     post
   ).then((result) => {
-    if (result.n > 0) res.status(200).json({ message: "Update successfull" });
+    console.log(result);
+    if (result.matchedCount > 0)
+      res.status(200).json({ message: "Update successfull" });
     else res.status(401).json({ message: "Unauthorized update" });
   });
 };
